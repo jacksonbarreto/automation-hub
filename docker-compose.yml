@@ -6,7 +6,7 @@ services:
     hostname: idp
     restart: always
     depends_on:
-      - postgres
+      - postgres-idp
       - redis
       - kafka1
     env_file:
@@ -17,9 +17,9 @@ services:
       - idp_network
       - service-hub
 
-  postgres:
+  postgres-idp:
     image: postgres:alpine
-    container_name: postgres
+    container_name: postgres-idp
     restart: always
     hostname: ${DB_HOST}
     environment:
@@ -29,12 +29,27 @@ services:
       PGPORT: ${DB_PORT}
       DB_HOST: ${DB_HOST}
     volumes:
-      - ./db_data:/var/lib/postgresql/data
+      - ./db_data_idp:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - "${DB_PORT}:${DB_PORT}"
     networks:
       - idp_network
+
+  postgres-automation:
+    image: postgres:alpine
+    container_name: postgres-automation
+    restart: always
+    hostname: postgres-automation
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: automation_hub
+      PGPORT: ${DB_PORT}
+      DB_HOST: postgres-automation
+    volumes:
+      - ./db_data_automation:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - automation_hub_network
 
   redis:
     image: redis:alpine
@@ -179,12 +194,12 @@ services:
     env_file:
       - .env-backend
     depends_on:
-      - postgres
+      - postgres-automation
       - idp
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
     volumes:
-      - ./uploads:/app/uploads
+      - ./images:/app/images
     networks:
       - service-hub
       - automation_hub_network
