@@ -1,4 +1,4 @@
-version: '3.5'
+version: "3.5"
 services:
   idp:
     image: jacksonbarreto/idp-automations-hub:latest
@@ -80,7 +80,14 @@ services:
       - service-hub
 
   nginxconfigmanager:
-    image: jacksonbarreto/automation-hub-nginxconfigmanager:latest
+    # image: jacksonbarreto/automation-hub-nginxconfigmanager:latest
+    # image: nginxconfigmanager:latest
+    container_name: nginxconfigmanager
+
+    build:
+      context: ../automation-hub-nginxconfigmanager
+      dockerfile: Dockerfile
+
     restart: always
     env_file:
       - .env-gateway
@@ -149,11 +156,15 @@ services:
       - net_kafka
       - service-hub
 
-
   frontend:
-    image: jacksonbarreto/automation-hub-frontend:latest
+    # image: jacksonbarreto/automation-hub-frontend:latest
     container_name: frontend
     hostname: frontend
+
+    build:
+      context: ../automation-hub-frontend
+      dockerfile: Dockerfile
+
     restart: always
     depends_on:
       - backend
@@ -184,7 +195,6 @@ services:
     container_name: generic-auto
     networks:
       - service-hub
-
 
 volumes:
   db_data:
