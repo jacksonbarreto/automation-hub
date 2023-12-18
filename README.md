@@ -7,6 +7,7 @@
 + Add the automation to the same network as the hub
 
 ```yaml
+# docker-compose.yml
 networks:
   service-hub:
     name: service-hub
@@ -18,6 +19,7 @@ networks:
 + In the hub, the name of the service can be whatever you want, but the port and the hostname must be the same as the one exposed in the automation
 
 ```yaml
+# docker-compose.yml
 services:
   automation:
     image: <image>
