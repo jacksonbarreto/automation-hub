@@ -80,14 +80,7 @@ services:
       - service-hub
 
   nginxconfigmanager:
-    # image: jacksonbarreto/automation-hub-nginxconfigmanager:latest
-    # image: nginxconfigmanager:latest
-    container_name: nginxconfigmanager
-
-    build:
-      context: ../automation-hub-nginxconfigmanager
-      dockerfile: Dockerfile
-
+    image: jacksonbarreto/automation-hub-nginxconfigmanager:latest
     restart: always
     env_file:
       - .env-gateway
@@ -157,14 +150,9 @@ services:
       - service-hub
 
   frontend:
-    # image: jacksonbarreto/automation-hub-frontend:latest
+    image: jacksonbarreto/automation-hub-frontend:latest
     container_name: frontend
     hostname: frontend
-
-    build:
-      context: ../automation-hub-frontend
-      dockerfile: Dockerfile
-
     restart: always
     depends_on:
       - backend
