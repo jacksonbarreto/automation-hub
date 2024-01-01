@@ -1,4 +1,4 @@
-version: '3.5'
+version: "3.5"
 services:
   idp:
     image: jacksonbarreto/idp-automations-hub:latest
@@ -149,7 +149,6 @@ services:
       - net_kafka
       - service-hub
 
-
   frontend:
     image: jacksonbarreto/automation-hub-frontend:latest
     container_name: frontend
@@ -184,7 +183,6 @@ services:
     container_name: generic-auto
     networks:
       - service-hub
-
 
 volumes:
   db_data:
