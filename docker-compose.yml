@@ -73,9 +73,14 @@ services:
       - frontend
       - idp
     ports:
+      - "443:443"
       - "80:80"
     volumes:
       - ./nginx-config:/etc/nginx
+      #- /etc/letsencrypt:/etc/letsencrypt
+      - type: bind
+        source: /etc/letsencrypt
+        target: /etc/letsencrypt
     networks:
       - service-hub
 
